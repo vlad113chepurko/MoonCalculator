@@ -3,11 +3,41 @@ import "./MoonCalculator.css";
 import { useMoonResult } from "@/hooks/useMoonResult";
 import { useState } from "react";
 import { components } from "@/components/index";
+import { useMoonStore } from "@/store/MoonStore";
+import { useLoadingStore } from "@/store/LoadingStore";
+import { moonService } from "@/services/Moon.service";
+import { useCalendarData } from "@/store/CalendarStore";
 
 export default function MoonCalculator() {
-  const [precision, setPrecision] = useState<number>(2);
+  const { day, month, year } = useCalendarData();
+  const setLoading = useLoadingStore((state: any) => state.setLoading);
+  const { setMoonAge, setMoonAgeProcent, setMoonPhase, setMoonWay } =
+    useMoonStore();
+  const [marks, setMarks] = useState<number>(0);
 
   const { handleCalculateMoonData } = useMoonResult();
+
+  const handleChangeMarks = (e: any) => {
+    setLoading(true);
+    const precision = Number(e);
+    setMarks(precision);
+
+    const age = moonService.moonAgeDay({ year, month, day });
+    const procent = moonService.moonIlluminationPercent(age);
+
+    const moonPhase = moonService.getMoonPercentPhase(procent);
+    const moonWay = moonService.moonDirection(age);
+
+    const roundedAge = Number(age.toFixed(precision));
+    const roundedProcent = Number(procent.toFixed(precision));
+
+    setMoonAge(roundedAge);
+    setMoonAgeProcent(roundedProcent);
+    setMoonPhase(moonPhase);
+    setMoonWay(moonWay);
+
+    setLoading(false);
+  };
 
   return (
     <div className="moon__container">
@@ -27,7 +57,7 @@ export default function MoonCalculator() {
       <div className="flex flex-col justify-center text-center position: absolute top-20 w-60">
         <p className="text-[0.8rem] text-gray-500">Точность вычислений</p>
         <label htmlFor="precision" className="mb-1">
-          Значков после запятой {precision}
+          Значков после запятой {marks}
         </label>
         <input
           type="range"
@@ -35,8 +65,8 @@ export default function MoonCalculator() {
           id="precision"
           min={0}
           max={20}
-          value={precision}
-          onChange={(e) => setPrecision(Number(e.target.value))}
+          value={marks}
+          onChange={(e) => handleChangeMarks(e.target.value)}
         />
       </div>
       <div className="self-end">

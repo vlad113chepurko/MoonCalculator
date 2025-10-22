@@ -3,11 +3,11 @@ import { useCalendarData } from "@/store/CalendarStore";
 import { useCalendarStore } from "@/store/CalendarStore";
 import { useGetData } from "@/hooks/useGetData";
 import { useFilterDays } from "@/hooks/useFilterDays";
-import { useEffect } from "react";
+import { useMoonResult } from "@/hooks/useMoonResult";
 
 export default function Calendar() {
   const { selectedMonths, filteredDays, years } = useCalendarStore();
-  const { setDay, setMonth, setYear, day, month, year, tm } = useCalendarData();
+  const { setDay, setMonth, setYear } = useCalendarData();
   const { filterDays } = useFilterDays();
 
   const getMonthNumber = (monthName: string) => {
@@ -32,10 +32,6 @@ export default function Calendar() {
   };
 
   useGetData();
-
-  useEffect(() => {
-    console.debug(day, month, year, tm);
-  }, [day, month, year, tm]);
 
   return (
     <div className="w-80 bg-gray-00 h-18 flex items-center justify-between self-start rounded-t-md border-b position: relative bg-gray-100">

@@ -15,11 +15,9 @@ interface CalendarData {
   day: number;
   month: number;
   year: number;
-  tm: number;
   setDay: (day: number) => void;
   setMonth: (month: number) => void;
   setYear: (year: number) => void;
-  setTm: (tm: number) => void;
 }
 
 export const useCalendarStore = create<MoonStore>((set) => ({
@@ -81,9 +79,7 @@ export const useCalendarData = create<CalendarData>((set) => ({
   day: 1,
   month: 1,
   year: 2025,
-  tm: Date.now(),
   setDay: (day) => set({ day }),
   setMonth: (month) => set({ month }),
   setYear: (year) => set({ year }),
-  setTm: (tm) => set({ tm }),
 }));
