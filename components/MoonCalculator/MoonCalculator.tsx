@@ -13,7 +13,7 @@ export default function MoonCalculator() {
   const setLoading = useLoadingStore((state: any) => state.setLoading);
   const { setMoonAge, setMoonAgeProcent, setMoonPhase, setMoonWay } =
     useMoonStore();
-  const [marks, setMarks] = useState<number>(0);
+  const [marks, setMarks] = useState<number>(20);
 
   const { handleCalculateMoonData } = useMoonResult();
 
@@ -71,7 +71,7 @@ export default function MoonCalculator() {
       </div>
       <div className="self-end">
         <button
-          onClick={() => handleCalculateMoonData()}
+          onClick={() => handleCalculateMoonData(marks)}
           type="button"
           className="bg-[#fa7014] text-white px-2 py-1 rounded-md hover:bg-[#f06c13] transition-colors duration-300 cursor-pointer w-40 h-10 font-bold text-[1.3rem]"
         >

@@ -8,30 +8,25 @@ export function useMoonResult() {
   const { setMoonAge, setMoonPhase, setMoonAgeProcent, setMoonWay } =
     useMoonStore();
 
-  const handleCalculateMoonData = useCallback(() => {
-    console.log("Day: ", day, "Month: ", month, "Year: ", year);
+  const handleCalculateMoonData = useCallback(
+    (marks: number) => {
+      console.log("Day: ", day, "Month: ", month, "Year: ", year);
 
-    const age = moonService.moonAgeDay({ year, month, day });
-    setMoonAge(age);
+      const age = moonService.moonAgeDay({ year, month, day });
+      setMoonAge(Number(age.toFixed(marks)));
 
-    const procent = moonService.moonIlluminationPercent(age);
-    const moonPhase = moonService.getMoonPercentPhase(procent);
-    const moonWay = moonService.moonDirection(age);
+      const procent = moonService.moonIlluminationPercent(age);
+      const moonPhase = moonService.getMoonPercentPhase(procent);
+      const moonWay = moonService.moonDirection(age);
 
-    console.log(procent, moonPhase, moonWay);
+      console.log(procent, moonPhase, moonWay);
 
-    setMoonWay(moonWay);
-    setMoonAgeProcent(procent);
-    setMoonPhase(moonPhase);
-  }, [
-    day,
-    month,
-    year,
-    setMoonAge,
-    setMoonAgeProcent,
-    setMoonPhase,
-    setMoonWay,
-  ]);
+      setMoonWay(moonWay);
+      setMoonAgeProcent(Number(procent.toFixed(marks)));
+      setMoonPhase(moonPhase);
+    },
+    [day, month, year, setMoonAge, setMoonAgeProcent, setMoonPhase, setMoonWay]
+  );
 
   return {
     handleCalculateMoonData,
